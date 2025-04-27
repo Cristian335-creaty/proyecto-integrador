@@ -1,0 +1,21 @@
+﻿@model ApplicationUser
+
+@{
+    ViewData["Title"] = "Panel del Estudiante";
+}
+
+<h1>Bienvenido Estudiante: @Model.NombreCompleto</h1>
+<h3>Código: @Model.CodigoEstudiante</h3>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                Tus cursos
+            </div>
+            <div class="card-body">
+                <p>Aquí irían los cursos del estudiante</p>
+            </div>
+        </div>
+    </div>
+</div>
