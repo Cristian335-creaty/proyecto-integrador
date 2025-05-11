@@ -1,0 +1,55 @@
+﻿@{
+    ViewData["Title"] = "Registrar Reto";
+}
+
+<h2>Registrar nuevo reto</h2>
+      
+<form asp-action="Registrar" method="post">
+    <div class="mb-3">
+        <label for="Titulo" class="form-label">Título</label>
+        <input type="text" class="form-control" id="Titulo" name="Titulo" required />
+    </div>
+
+    <div class="mb-3">
+        <label for="Descripcion" class="form-label">Descripción</label>
+        <textarea class="form-control" id="Descripcion" name="Descripcion" rows="6" required></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label for="Dificultad" class="form-label">Dificultad</label>
+        <select class="form-select" id="Dificultad" name="Dificultad">
+            <option value="Fácil">Fácil</option>
+            <option value="Media">Media</option>
+            <option value="Difícil">Difícil</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="Temas" class="form-label">Temas</label>
+        <input type="text" class="form-control" id="Temas" name="Temas" placeholder="DP, Strings, Grafos" required />
+    </div>
+
+    <div id="casos-container">
+        <h5>Casos de Prueba</h5>
+    </div>
+    <button type="button" class="btn btn-secondary mb-3" onclick="agregarCaso()">Agregar Caso de Prueba</button>
+
+    <button type="submit" class="btn btn-primary">Registrar Reto</button>
+</form>
+
+@section Scripts {
+    <script>
+        let indice = 0;
+        function agregarCaso() {
+            let container = document.getElementById("casos-container");
+            let html = `
+                <div class="caso-prueba mb-2">
+                    <textarea name="CasosDePrueba[${indice}].Entrada" class="form-control mb-1" placeholder="Entrada"></textarea>
+                    <textarea name="CasosDePrueba[${indice}].SalidaEsperada" class="form-control" placeholder="Salida Esperada"></textarea>
+                </div>`;
+            container.insertAdjacentHTML("beforeend", html);
+            indice++;
+        }
+        agregarCaso();
+    </script>
+}

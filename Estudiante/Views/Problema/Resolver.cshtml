@@ -1,0 +1,32 @@
+﻿@model Estudiante.Models.Problema
+<h2>@Model.Titulo</h2>
+<p>@Model.Descripcion</p>
+
+<form id="formCode">
+    <textarea id="codigo" name="codigo" class="form-control" rows="15" placeholder="public class Solucion { public static void main(String[] args) { ... } }"></textarea>
+    <button class="btn btn-primary mt-2" type="submit">Enviar</button>
+</form>
+<div id="resultado" class="mt-3"></div>
+@section Scripts {
+    <script>
+        $("#formCode").submit(function (e) {
+            e.preventDefault();
+            $.post("/Problema/EvaluarCodigo", {
+                id: @Model.Id,
+                codigo: $("#codigo").val()
+            }, function (data) {
+                let html = "";
+                data.resultados.forEach((r, i) => {
+                    html += `<div class='alert alert-${r.correcto ? "success" : "danger"}'>
+                        <strong>Caso ${i + 1}</strong><br>
+                        Entrada: <pre>${r.entrada}</pre>
+                        Salida esperada: <pre>${r.esperado}</pre>
+                        Salida obtenida: <pre>${r.salida}</pre>
+                        Error: <pre>${r.error}</pre>
+                    </div>`;
+                });
+                $("#resultado").html(html);
+            });
+        });
+    </script>
+}
