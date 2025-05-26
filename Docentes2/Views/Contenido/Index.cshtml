@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Docentes2.Models.Contenido>
+
+@{
+    ViewData["Title"] = "Contenido Educativo";
+}
+
+<h1>Contenido Educativo</h1>
+
+<a asp-action="Create" class="btn btn-primary mb-3">Agregar nuevo contenido</a>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Título</th>
+            <th>Descripción</th>
+            <th>Fecha</th>
+            <th>Imagen</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Titulo</td>
+                <td>@item.Descripcion</td>
+                <td>@item.FechaCreacion.ToShortDateString()</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.ImagenURL))
+                    {
+                        <img src="@item.ImagenURL" alt="Imagen" width="100" />
+                    }
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Editar</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">Detalles</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

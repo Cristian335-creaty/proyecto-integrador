@@ -1,0 +1,47 @@
+﻿@{
+    ViewData["Title"] = "Bienvenida";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="jumbotron text-center bg-light p-5 shadow rounded">
+        <h1 class="display-4">👋 ¡Bienvenidos docentes!</h1>
+        <p class="lead">Este es su portal para subir contenido educativo y retos de <strong>programación competitiva</strong>.</p>
+        <hr class="my-4">
+        <p>Fomenta el aprendizaje, desafía a tus estudiantes y construye una comunidad más fuerte.</p>
+        <a class="btn btn-primary btn-lg mt-3" href="@Url.Action("Create", "Contenido")">📤 Subir Contenido</a>
+        <a class="btn btn-success btn-lg mt-3 ms-2" href="@Url.Action("Index", "Reto")">🏁 Subir Retos</a>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0">
+                <img src="https://cdn-icons-png.flaticon.com/512/2721/2721293.png" class="card-img-top p-4" alt="Contenido">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Gestión de Contenido</h5>
+                    <p class="card-text">Crea y administra material educativo para tus clases de programación.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0">
+                <img src="https://cdn-icons-png.flaticon.com/512/2942/2942921.png" class="card-img-top p-4" alt="Retos">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Retos de Programación</h5>
+                    <p class="card-text">Publica desafíos de código para fomentar la práctica en tus alumnos.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0">
+                <img src="https://cdn-icons-png.flaticon.com/512/3105/3105726.png" class="card-img-top p-4" alt="Estadísticas">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Seguimiento</h5>
+                    <p class="card-text">Visualiza el avance de tus estudiantes y el impacto de tus publicaciones.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

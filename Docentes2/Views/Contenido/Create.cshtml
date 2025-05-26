@@ -1,0 +1,49 @@
+﻿@model Docentes2.Models.Contenido
+
+@{
+    ViewData["Title"] = "Crear Contenido";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label asp-for="Titulo" class="control-label">Título</label>
+                <input asp-for="Titulo" class="form-control" />
+                <span asp-validation-for="Titulo" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Descripcion" class="control-label">Descripción</label>
+                <textarea asp-for="Descripcion" class="form-control"></textarea>
+                <span asp-validation-for="Descripcion" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="FechaCreacion" class="control-label">Fecha</label>
+                <input asp-for="FechaCreacion" type="date" class="form-control" />
+                <span asp-validation-for="FechaCreacion" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Imagen</label>
+                <input type="file" name="imagen" class="form-control" />
+                <small class="form-text text-muted">Selecciona una imagen para subir (JPG, PNG, etc.)</small>
+            </div>
+
+            <div class="form-group mt-3">
+                <button type="submit" class="btn btn-success">Guardar</button>
+                <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
