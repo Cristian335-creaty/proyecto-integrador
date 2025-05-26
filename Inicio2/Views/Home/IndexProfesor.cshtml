@@ -1,0 +1,36 @@
+﻿@model ApplicationUser
+
+@{
+    ViewData["Title"] = "Panel del Profesor";
+}
+
+<h1>Bienvenido Profesor: @Model.NombreCompleto</h1>
+<h3>Departamento: @Model.Departamento</h3>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                Tus cursos asignados
+            </div>
+            <div class="card-body">
+                <p>Aquí irían los cursos que imparte el profesor</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Apartado para crear reto -->
+    <div class="col-md-6">
+        <div class="card border-success">
+            <div class="card-header bg-success text-white">
+                Crear reto de programación
+            </div>
+            <div class="card-body">
+                <p>¿Quieres proponer un nuevo reto para tus estudiantes?</p>
+                <a href="/problema/registrar/" class="btn btn-success">
+                    Ir al panel de creación de retos
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

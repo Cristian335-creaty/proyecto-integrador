@@ -1,0 +1,27 @@
+﻿@model IEnumerable<Inicio2.Models.ViewModels.UsuarioViewModel>
+
+@{
+    ViewData["Title"] = "Lista de Usuarios";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Rol</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var usuario in Model)
+        {
+            <tr>
+                <td>@usuario.NombreCompleto</td>
+                <td>@usuario.Email</td>
+                <td>@usuario.Rol</td>
+            </tr>
+        }
+    </tbody>
+</table>
