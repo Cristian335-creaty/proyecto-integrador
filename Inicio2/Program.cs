@@ -1,20 +1,24 @@
 using Estudiante.Services;
 using Inicio2.Data;
 using Inicio2.Models;
+using Inicio2.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
+
+/// Entry point for the web application. Configures services, middleware, and database seeding.
+/// All comments and variable names are in English to comply with LSP Clean Code principles.
+
 var builder = WebApplication.CreateBuilder(args);
 
-// 1. Configuración de DbContext
-builder.Services.AddDbContext<bd_universidadContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("ConexionSql")));
+// 1. DbContext configuration
+builder.Services.AddDbContext<bd_universityContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection")));
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-
-// 2. Configuración de Identity con roles
+// 2. Identity configuration with roles
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
     options.SignIn.RequireConfirmedAccount = false;
@@ -23,16 +27,16 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireUppercase = true;
 
-    // Configuraciones adicionales de usuario
+    // Additional user configurations
     options.User.RequireUniqueEmail = true;
     options.Lockout.MaxFailedAccessAttempts = 5;
     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
 })
-.AddEntityFrameworkStores<bd_universidadContext>()
+.AddEntityFrameworkStores<bd_universityContext>()
 .AddDefaultTokenProviders()
-.AddDefaultUI(); // Para soporte de interfaces de Identity
+.AddDefaultUI(); // For Identity UI support
 
-// 3. Configuración de sesión
+// 3. Session configuration
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30);
@@ -40,19 +44,24 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-// 4. Configuración de MVC y Razor Pages
+// 4. MVC and Razor Pages configuration
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
+// Register Judge0Service as singleton
 builder.Services.AddSingleton<Judge0Service>();
+
+// Register Contenido services
+builder.Services.AddControllersWithViews();
+builder.Services.AddHttpClient<IContenidoService, ContenidoService>();
 
 var app = builder.Build();
 
-// Configuración del pipeline HTTP
+// HTTP pipeline configuration
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
-    await SeedDatabase(app); // Solo en desarrollo
+    await SeedDatabaseAsync(app); // Only in development
 }
 else
 {
@@ -65,11 +74,11 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseSession(); // Habilitar sesiones
+app.UseSession(); // Enable sessions
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Mapeo de rutas
+// Route mapping
 app.MapControllerRoute(
     name: "areas",
     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
@@ -82,23 +91,26 @@ app.MapRazorPages();
 
 app.Run();
 
-// Función para inicializar la base de datos
-async Task SeedDatabase(WebApplication app)
+
+/// Seeds the database with initial roles and an admin user. Only runs in development.
+
+
+async Task SeedDatabaseAsync(WebApplication app)
 {
     using var scope = app.Services.CreateScope();
     var services = scope.ServiceProvider;
 
     try
     {
-        var context = services.GetRequiredService<bd_universidadContext>();
+        var context = services.GetRequiredService<bd_universityContext>();
         var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
         var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
-        // Asegurar que la base de datos esté creada
+        // Ensure the database is created
         await context.Database.EnsureCreatedAsync();
 
-        // Crear roles básicos
-        string[] roles = { "Admin", "Docente", "Estudiante" };
+        // Create basic roles
+        string[] roles = { "Admin", "Teacher", "Student" };
         foreach (var role in roles)
         {
             if (!await roleManager.RoleExistsAsync(role))
@@ -107,10 +119,9 @@ async Task SeedDatabase(WebApplication app)
             }
         }
 
-        // Crear usuario administrador inicial
-        var adminEmail = "admin@universidad.edu";
+        // Create initial admin user
+        var adminEmail = "admin@university.edu";
         var adminUser = await userManager.FindByEmailAsync(adminEmail);
-
 
         if (adminUser == null)
         {
@@ -118,7 +129,7 @@ async Task SeedDatabase(WebApplication app)
             {
                 UserName = adminEmail,
                 Email = adminEmail,
-                NombreCompleto = "Administrador Principal",
+                FullName = "Main Administrator",
                 EmailConfirmed = true
             };
 
@@ -128,18 +139,17 @@ async Task SeedDatabase(WebApplication app)
             {
                 await userManager.AddToRoleAsync(adminUser, "Admin");
 
-                // Agregar todos los roles si es necesario (opcional)
+                // Optionally add all roles to the admin user
                 // await userManager.AddToRolesAsync(adminUser, roles);
             }
         }
 
-        // Puedes agregar más datos de prueba aquí según sea necesario
+        // You can add more seed data here if needed
 
     }
     catch (Exception ex)
     {
         var logger = services.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "Ocurrió un error al inicializar la base de datos");
+        logger.LogError(ex, "An error occurred while initializing the database");
     }
 }
-

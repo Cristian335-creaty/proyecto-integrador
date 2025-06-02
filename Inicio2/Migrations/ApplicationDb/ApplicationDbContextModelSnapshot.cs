@@ -22,7 +22,7 @@ namespace Inicio2.Migrations.ApplicationDb
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Inicio2.Models.Estudiantes.CasoPrueba", b =>
+            modelBuilder.Entity("Inicio2.Models.Estudiantes.Problem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -30,25 +30,44 @@ namespace Inicio2.Migrations.ApplicationDb
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Entrada")
+                    b.Property<string>("AdditionalCases")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ProblemaId")
-                        .HasColumnType("int");
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("SalidaEsperada")
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Difficulty")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SampleInput")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SampleOutput")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Topics")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProblemaId");
-
-                    b.ToTable("CasoPrueba");
+                    b.ToTable("Problems");
                 });
 
-            modelBuilder.Entity("Inicio2.Models.Estudiantes.Problema", b =>
+            modelBuilder.Entity("Inicio2.Models.Estudiantes.TestCase", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -56,53 +75,34 @@ namespace Inicio2.Migrations.ApplicationDb
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("CasosAdicionales")
+                    b.Property<string>("ExpectedOutput")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Codigo")
+                    b.Property<string>("Input")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Descripcion")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Dificultad")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("InputEsperado")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OutputEsperado")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Temas")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Titulo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("ProblemId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Problemas");
+                    b.HasIndex("ProblemId");
+
+                    b.ToTable("TestCase");
                 });
 
-            modelBuilder.Entity("Inicio2.Models.Estudiantes.CasoPrueba", b =>
+            modelBuilder.Entity("Inicio2.Models.Estudiantes.TestCase", b =>
                 {
-                    b.HasOne("Inicio2.Models.Estudiantes.Problema", null)
-                        .WithMany("CasosDePrueba")
-                        .HasForeignKey("ProblemaId");
+                    b.HasOne("Inicio2.Models.Estudiantes.Problem", null)
+                        .WithMany("TestCases")
+                        .HasForeignKey("ProblemId");
                 });
 
-            modelBuilder.Entity("Inicio2.Models.Estudiantes.Problema", b =>
+            modelBuilder.Entity("Inicio2.Models.Estudiantes.Problem", b =>
                 {
-                    b.Navigation("CasosDePrueba");
+                    b.Navigation("TestCases");
                 });
 #pragma warning restore 612, 618
         }

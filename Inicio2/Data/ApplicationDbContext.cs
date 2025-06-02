@@ -7,6 +7,6 @@ namespace Inicio2.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options) { }
 
-        public DbSet<Problema> Problemas { get; set; }
+        public DbSet<Problem> Problems { get; set; }
     }
 }

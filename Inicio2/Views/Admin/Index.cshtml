@@ -1,55 +1,88 @@
 ﻿@{
-    ViewData["Title"] = "Panel de Administración";
+    ViewData["Title"] = "Admin Panel";
 }
 
+<style>
+    .admin-panel-header {
+        background: linear-gradient(90deg, #2563eb 0%, #1e40af 100%);
+        color: #fff;
+        border-radius: 1.25rem 1.25rem 0 0;
+        padding: 2rem 1rem 1rem 1rem;
+        text-align: center;
+        margin-bottom: 2rem;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.10);
+    }
+
+        .admin-panel-header h2 {
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+    .admin-card {
+        border-radius: 1.25rem;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.10);
+        transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+        .admin-card:hover {
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.15);
+        }
+
+        .admin-card .card-header {
+            font-size: 1.15rem;
+            font-weight: 600;
+            border-radius: 1.25rem 1.25rem 0 0;
+        }
+
+        .admin-card .card-footer {
+            border-radius: 0 0 1.25rem 1.25rem;
+            background: #f8fafc;
+            border-top: none;
+        }
+
+        .admin-card .btn {
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+</style>
+
 <div class="container mt-4">
-    <div class="row mb-4">
-        <div class="col-12">
-            <h2><i class="fas fa-crown me-2"></i>@ViewData["Title"]</h2>
-            <hr>
-        </div>
+    <div class="admin-panel-header">
+        <h2><i class="fas fa-crown me-2"></i>@ViewData["Title"]</h2>
+        <p class="mb-0">Welcome to the admin panel. Manage users and platform resources.</p>
     </div>
 
-    <div class="row">
-        <div class="col-md-4 mb-4">
-            <div class="card h-100">
+    <div class="row justify-content-center">
+        <div class="col-md-5 mb-4">
+            <div class="card admin-card h-100">
                 <div class="card-header bg-primary text-white">
-                    <i class="fas fa-chalkboard-teacher me-2"></i>Gestión de Profesores
+                    <i class="fas fa-chalkboard-teacher me-2"></i>Teacher Management
                 </div>
                 <div class="card-body">
-                    <p class="card-text">Crea y administra los profesores del sistema.</p>
+                    <p class="card-text">Create and manage system teachers.</p>
                 </div>
-                <div class="card-footer bg-transparent">
-                    <a asp-action="RegistrarProfesor" class="btn btn-primary">Crear Profesor</a>
-                    <a asp-action="ListaUsuarios" class="btn btn-outline-secondary ms-2">Ver Todos</a>
+                <div class="card-footer d-flex justify-content-end">
+                    <a asp-action="RegisterTeacher" class="btn btn-primary">
+                        <i class="fas fa-user-plus me-1"></i>Create Teacher
+                    </a>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-4 mb-4">
-            <div class="card h-100">
+        <div class="col-md-5 mb-4">
+            <div class="card admin-card h-100">
                 <div class="card-header bg-success text-white">
-                    <i class="fas fa-user-graduate me-2"></i>Gestión de Estudiantes
+                    <i class="fas fa-user-graduate me-2"></i>User Management
                 </div>
                 <div class="card-body">
-                    <p class="card-text">Administra los estudiantes registrados.</p>
+                    <p class="card-text">Manage registered users.</p>
                 </div>
-                <div class="card-footer bg-transparent">
-                    <a href="#" class="btn btn-success">Ver Estudiantes</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4 mb-4">
-            <div class="card h-100">
-                <div class="card-header bg-info text-white">
-                    <i class="fas fa-book me-2"></i>Gestión de Cursos
-                </div>
-                <div class="card-body">
-                    <p class="card-text">Administra los cursos y asignaturas.</p>
-                </div>
-                <div class="card-footer bg-transparent">
-                    <a href="#" class="btn btn-info">Administrar Cursos</a>
+                <div class="card-footer d-flex justify-content-end">
+                    <a asp-action="UserList" class="btn btn-outline-secondary">
+                        <i class="fas fa-users me-1"></i>View Users
+                    </a>
                 </div>
             </div>
         </div>

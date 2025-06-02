@@ -1,4 +1,5 @@
 ﻿using Inicio2.Models;
+using Inicio2.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +13,9 @@ namespace Inicio2.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
+        
+        /// AdminController constructor.
+        
         public AdminController(
             UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager)
@@ -20,20 +24,29 @@ namespace Inicio2.Controllers
             _roleManager = roleManager;
         }
 
+        
+        /// Returns the admin dashboard view.
+        
         [HttpGet]
         public IActionResult Index()
         {
             return View();
         }
 
+        
+        /// Returns the view to register a new teacher.
+        
         [HttpGet]
-        public IActionResult RegistrarProfesor()
+        public IActionResult RegisterTeacher()
         {
             return View();
         }
 
+        
+        /// Handles the registration of a new teacher.
+        
         [HttpPost]
-        public async Task<IActionResult> RegistrarProfesor(RegistrarProfesorModel model)
+        public async Task<IActionResult> RegisterTeacher(RegisterTeacherModel model)
         {
             if (ModelState.IsValid)
             {
@@ -41,16 +54,16 @@ namespace Inicio2.Controllers
                 {
                     UserName = model.Email,
                     Email = model.Email,
-                    NombreCompleto = model.NombreCompleto,
-                    Departamento = model.Departamento
+                    FullName = model.FullName,
+                    Department = model.Department
                 };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)
                 {
-                    await _userManager.AddToRoleAsync(user, "Docente");
-                    ViewBag.SuccessMessage = "Profesor creado exitosamente";
+                    await _userManager.AddToRoleAsync(user, "Teacher");
+                    ViewBag.SuccessMessage = "Teacher created successfully";
                     return RedirectToAction("Index");
                 }
 
@@ -62,54 +75,181 @@ namespace Inicio2.Controllers
             return View(model);
         }
 
+        
+        /// Returns the list of users with their roles.
+        
         [HttpGet]
-        public async Task<IActionResult> ListaUsuarios()
+        public async Task<IActionResult> UserList()
         {
-            var usuarios = _userManager.Users.ToList();
-            var usuariosConRoles = new List<UsuarioInfoViewModel>();
+            var users = _userManager.Users.ToList();
+            var usersWithRoles = new List<UserViewModel>();
 
-            foreach (var usuario in usuarios)
+            foreach (var user in users)
             {
-                var roles = await _userManager.GetRolesAsync(usuario);
-                usuariosConRoles.Add(new UsuarioInfoViewModel
+                var roles = await _userManager.GetRolesAsync(user);
+                usersWithRoles.Add(new UserViewModel
                 {
-                    Id = usuario.Id,
-                    NombreCompleto = usuario.NombreCompleto,
-                    Email = usuario.Email,
-                    Rol = roles.FirstOrDefault() ?? "Sin rol"
+                    Id = user.Id,
+                    FullName = user.FullName,
+                    Email = user.Email,
+                    Role = roles.FirstOrDefault() ?? "No role"
                 });
             }
 
-            return View(usuariosConRoles);
+            return View(usersWithRoles);
+        }
+
+        
+        /// Returns the view to edit a teacher.
+        
+        [HttpGet]
+        public async Task<IActionResult> EditTeacher(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null) return NotFound();
+
+            var model = new EditTeacherViewModel
+            {
+                Email = user.Email,
+                FullName = user.FullName,
+                Department = user.Department
+            };
+            return View(model);
+        }
+
+        
+        /// Handles the update of a teacher's information.
+        
+        [HttpPost]
+        public async Task<IActionResult> EditTeacher(string id, EditTeacherViewModel model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null) return NotFound();
+
+            user.FullName = model.FullName;
+            user.Department = model.Department;
+
+            var result = await _userManager.UpdateAsync(user);
+            if (result.Succeeded)
+                return RedirectToAction("UserList");
+
+            foreach (var error in result.Errors)
+                ModelState.AddModelError(string.Empty, error.Description);
+
+            return View(model);
+        }
+
+        
+        /// Returns the view to edit a student.
+        
+        [HttpGet]
+        public async Task<IActionResult> EditStudent(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null) return NotFound();
+
+            var model = new EditStudentViewModel
+            {
+                Email = user.Email,
+                FullName = user.FullName,
+                StudentCode = user.StudentCode
+            };
+            return View(model);
+        }
+
+        
+        /// Handles the update of a student's information.
+        
+        [HttpPost]
+        public async Task<IActionResult> EditStudent(string id, EditStudentViewModel model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null) return NotFound();
+
+            user.FullName = model.FullName;
+            user.StudentCode = model.StudentCode;
+
+            var result = await _userManager.UpdateAsync(user);
+            if (result.Succeeded)
+                return RedirectToAction("UserList");
+
+            foreach (var error in result.Errors)
+                ModelState.AddModelError(string.Empty, error.Description);
+
+            return View(model);
+        }
+
+        
+        /// Handles the deletion of a user (except Admins).
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                return RedirectToAction("UserList");
+
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+                return RedirectToAction("UserList");
+
+            var roles = await _userManager.GetRolesAsync(user);
+            if (roles.Contains("Admin"))
+            {
+                TempData["Error"] = "Cannot delete a user with Admin role.";
+                return RedirectToAction("UserList");
+            }
+
+            var result = await _userManager.DeleteAsync(user);
+            if (result.Succeeded)
+            {
+                TempData["Success"] = "User deleted successfully.";
+            }
+            else
+            {
+                TempData["Error"] = "Error deleting the user.";
+            }
+
+            return RedirectToAction("UserList");
         }
     }
 
-    public class RegistrarProfesorModel
+    
+    /// ViewModel for registering a new teacher.
+    
+    public class RegisterTeacherModel
     {
-        [Required(ErrorMessage = "El nombre completo es requerido")]
-        public string NombreCompleto { get; set; }
+        [Required(ErrorMessage = "Full name is required")]
+        public string FullName { get; set; }
 
-        [Required(ErrorMessage = "El email es requerido")]
-        [EmailAddress(ErrorMessage = "El email no tiene un formato válido")]
+        [Required(ErrorMessage = "Email is required")]
+        [EmailAddress(ErrorMessage = "Invalid email format")]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "El departamento es requerido")]
-        public string Departamento { get; set; }
+        [Required(ErrorMessage = "Department is required")]
+        public string Department { get; set; }
 
-        [Required(ErrorMessage = "La contraseña es requerida")]
+        [Required(ErrorMessage = "Password is required")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Compare("Password", ErrorMessage = "Las contraseñas no coinciden")]
+        [Compare("Password", ErrorMessage = "Passwords do not match")]
         public string ConfirmPassword { get; set; }
     }
 
-    public class UsuarioInfoViewModel
+    
+    /// ViewModel for displaying user information in lists.
+    
+    public class UserInfoViewModel
     {
         public string Id { get; set; }
-        public string NombreCompleto { get; set; }
+        public string FullName { get; set; }
         public string Email { get; set; }
-        public string Rol { get; set; }
+        public string Role { get; set; }
     }
 }

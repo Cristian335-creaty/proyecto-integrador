@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 namespace Inicio2.Controllers
 {
-    [Authorize] // Requiere autenticación para todas las acciones
+    [Authorize] // Requires authentication for all actions
     public class HomeController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -29,39 +29,39 @@ namespace Inicio2.Controllers
 
                 if (user == null)
                 {
-                    _logger.LogWarning("Usuario autenticado no encontrado en la base de datos");
+                    _logger.LogWarning("Authenticated user not found in the database");
                     return RedirectToAction("Error", "Home");
                 }
 
-                // Redirección basada en roles (usando los nombres correctos de tus roles)
+                // Role-based redirection (using the correct role names)
                 if (User.IsInRole("Admin"))
                 {
-                    _logger.LogInformation("Redirigiendo administrador a panel de control");
+                    _logger.LogInformation("Redirecting admin to control panel");
                     return RedirectToAction("Index", "Admin", new { area = "Admin" });
                 }
-                else if (User.IsInRole("Docente"))
+                else if (User.IsInRole("Teacher"))
                 {
-                    _logger.LogInformation("Mostrando vista de docente");
-                    return View("IndexProfesor", user);
+                    _logger.LogInformation("Showing teacher view");
+                    return View("IndexTeacher", user);
                 }
-                else if (User.IsInRole("Estudiante"))
+                else if (User.IsInRole("Student"))
                 {
-                    _logger.LogInformation("Mostrando vista de estudiante");
-                    return View("IndexEstudiante", user);
+                    _logger.LogInformation("Showing student view");
+                    return View("IndexStudent", user);
                 }
 
-                // Si no tiene ningún rol asignado
-                _logger.LogWarning("Usuario sin roles asignados");
+                // If the user has no assigned roles
+                _logger.LogWarning("User without assigned roles");
                 return View("Index", user);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error en HomeController/Index");
+                _logger.LogError(ex, "Error in HomeController/Index");
                 return RedirectToAction("Error", "Home");
             }
         }
 
-        [AllowAnonymous] // Accesible sin autenticación
+        [AllowAnonymous] // Accessible without authentication
         public IActionResult Error()
         {
             return View(new ErrorViewModel
@@ -70,15 +70,10 @@ namespace Inicio2.Controllers
             });
         }
 
-
-
-        [Authorize(Roles = "Admin,Docente,Estudiante")] // Solo para estos roles
-        public IActionResult PanelControl()
+        [Authorize(Roles = "Admin,Teacher,Student")] // Only for these roles
+        public IActionResult ControlPanel()
         {
             return View();
         }
-
-
-
     }
 }
