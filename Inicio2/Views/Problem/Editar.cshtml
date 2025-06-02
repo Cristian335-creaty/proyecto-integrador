@@ -1,0 +1,56 @@
+﻿@model Inicio2.Models.Estudiantes.Problem
+
+@{
+    ViewData["Title"] = "Edit Reto";
+}
+
+<h2>Editar Reto</h2>
+
+<form asp-action="Editar" method="post">
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="Code" />
+
+    <div class="mb-3">
+        <label asp-for="Title" class="form-label"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Difficulty" class="form-label"></label>
+        <select asp-for="Difficulty" class="form-control">
+            <option>Fácil</option>
+            <option>Media</option>
+            <option>Difícil</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Topics" class="form-label"></label>
+        <input asp-for="Topics" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="SampleInput" class="form-label">Entrada Esperada</label>
+        <textarea asp-for="SampleInput" class="form-control" rows="2"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="SampleOutput" class="form-label">Salida Esperada</label>
+        <textarea asp-for="SampleOutput" class="form-control" rows="2"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+    <a asp-action="ListaDocente" class="btn btn-secondary">Cancelar</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,102 @@
+﻿@model ApplicationUser
+
+@{
+    // Set the page title for the professor panel
+    ViewData["Title"] = "Professor Panel";
+}
+
+<style>
+    /* Header style for the professor welcome section */
+    .professor-header {
+        background: linear-gradient(90deg, #2563eb 0%, #1e40af 100%);
+        color: #fff;
+        border-radius: 1.25rem 1.25rem 0 0;
+        padding: 2rem 1rem 1rem 1rem;
+        text-align: center;
+        margin-bottom: 2rem;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.10);
+    }
+
+        .professor-header h1 {
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .professor-header h4 {
+            font-weight: 400;
+            color: #c7d2fe;
+        }
+
+    /* Card style for professor dashboard sections */
+    .professor-card {
+        border-radius: 1.25rem;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.10);
+        transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+        .professor-card:hover {
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.15);
+        }
+
+        .professor-card .card-header {
+            font-size: 1.15rem;
+            font-weight: 600;
+            border-radius: 1.25rem 1.25rem 0 0;
+        }
+
+        .professor-card .card-footer {
+            border-radius: 0 0 1.25rem 1.25rem;
+            background: #f8fafc;
+            border-top: none;
+        }
+
+        .professor-card .btn {
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+</style>
+
+<div class="container mt-4">
+    <!-- Professor welcome header -->
+    <div class="professor-header">
+        <h1>
+            <i class="fas fa-chalkboard-teacher me-2"></i>
+            Welcome, @Model.FullName
+        </h1>
+        <h4>
+            <i class="fas fa-building me-2"></i>
+            Department: @Model.Department
+        </h4>
+    </div>
+
+    <div class="row justify-content-center">
+        <!-- Assigned courses card -->
+        <div class="col-md-6 mb-4">
+            <div class="card professor-card h-100">
+                <div class="card-header bg-primary text-white">
+                    <i class="fas fa-book-open me-2"></i>Your Assigned Courses
+                </div>
+                <div class="card-body">
+                    <p class="text-muted">Here you will see the courses you are teaching.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Programming challenge creation card -->
+        <div class="col-md-6 mb-4">
+            <div class="card professor-card h-100 border-success">
+                <div class="card-header bg-success text-white">
+                    <i class="fas fa-code me-2"></i>Create Programming Challenge
+                </div>
+                <div class="card-body">
+                    <p class="text-muted">Would you like to propose a new challenge for your students?</p>
+                    <a href="/problem/register/" class="btn btn-success">
+                        <i class="fas fa-plus-circle me-1"></i>Go to Challenge Creation Panel
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

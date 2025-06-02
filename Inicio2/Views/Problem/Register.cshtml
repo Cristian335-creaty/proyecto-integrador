@@ -1,0 +1,131 @@
+﻿@{
+    ViewData["Title"] = "Register Challenge";
+}
+
+<style>
+    .challenge-card {
+        border-radius: 1.25rem;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.10);
+        margin-top: 40px;
+        margin-bottom: 40px;
+        background: #fff;
+    }
+
+    .challenge-header {
+        border-radius: 1.25rem 1.25rem 0 0 !important;
+        background: linear-gradient(90deg, #2563eb 0%, #1e40af 100%);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.5rem 1rem;
+    }
+
+        .challenge-header i {
+            font-size: 2rem;
+        }
+
+    .form-label {
+        font-weight: 500;
+    }
+
+    .form-control, .form-select {
+        font-size: 1.1rem;
+        border-radius: 0.75rem;
+    }
+
+    .btn-primary {
+        background: linear-gradient(90deg, #2563eb 0%, #1e40af 100%);
+        border: none;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+    }
+
+        .btn-primary:hover {
+            background: linear-gradient(90deg, #1e40af 0%, #2563eb 100%);
+        }
+
+    .btn-secondary {
+        font-weight: 500;
+    }
+
+    .test-case {
+        background: #f1f5f9;
+        border-radius: 0.75rem;
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+</style>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-8">
+            <div class="card challenge-card">
+                <div class="challenge-header">
+                    <i class="fas fa-plus-circle"></i>
+                    <div>
+                        <h3 class="mb-0">Register New Challenge</h3>
+                        <small class="text-light">Fill out the form to create a new programming challenge</small>
+                    </div>
+                </div>
+                <div class="card-body px-4 py-4">
+                    <form asp-action="Register" method="post" autocomplete="off">
+                        <div class="mb-3">
+                            <label for="Title" class="form-label"><i class="fas fa-heading me-1"></i>Title</label>
+                            <input type="text" class="form-control" id="Title" name="Title" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="Description" class="form-label"><i class="fas fa-align-left me-1"></i>Description</label>
+                            <textarea class="form-control" id="Description" name="Description" rows="6" required></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="Difficulty" class="form-label"><i class="fas fa-signal me-1"></i>Difficulty</label>
+                            <select class="form-select" id="Difficulty" name="Difficulty">
+                                <option value="Easy">Easy</option>
+                                <option value="Medium">Medium</option>
+                                <option value="Hard">Hard</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="Topics" class="form-label"><i class="fas fa-tags me-1"></i>Topics</label>
+                            <input type="text" class="form-control" id="Topics" name="Topics" placeholder="DP, Strings, Graphs" required />
+                        </div>
+
+                        <div id="testcases-container">
+                            <h5 class="mb-3"><i class="fas fa-vial me-1"></i>Test Cases</h5>
+                        </div>
+                        <button type="button" class="btn btn-secondary mb-3" onclick="addTestCase()">
+                            <i class="fas fa-plus me-1"></i>Add Test Case
+                        </button>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-save me-1"></i>Register Challenge
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        let index = 0;
+        function addTestCase() {
+            let container = document.getElementById("testcases-container");
+            let html = `
+                <div class="test-case">
+                    <textarea name="TestCases[${index}].Input" class="form-control mb-2" placeholder="Input"></textarea>
+                    <textarea name="TestCases[${index}].ExpectedOutput" class="form-control" placeholder="Expected Output"></textarea>
+                </div>`;
+            container.insertAdjacentHTML("beforeend", html);
+            index++;
+        }
+        addTestCase();
+    </script>
+}

@@ -1,0 +1,48 @@
+﻿@model Inicio2.Models.Estudiantes.Problem
+
+@{
+    ViewData["Title"] = "Challenge Details";
+}
+
+<h2>Detalles del Reto</h2>
+
+<div class="card p-4">
+    <dl class="row">
+        <dt class="col-sm-3">Código</dt>
+        <dd class="col-sm-9">@Model.Code</dd>
+
+        <dt class="col-sm-3">Título</dt>
+        <dd class="col-sm-9">@Model.Title</dd>
+
+        <dt class="col-sm-3">Dificultad</dt>
+        <dd class="col-sm-9">
+            <span class="badge bg-@Color(Model.Difficulty)">
+                @Model.Difficulty
+            </span>
+        </dd>
+
+        <dt class="col-sm-3">Temas</dt>
+        <dd class="col-sm-9">@Model.Topics</dd>
+
+        <dt class="col-sm-3">Descripción</dt>
+        <dd class="col-sm-9">@Model.Description</dd>
+
+        <dt class="col-sm-3">Entrada esperada</dt>
+        <dd class="col-sm-9"><pre>@Model.SampleInput</pre></dd>
+
+        <dt class="col-sm-3">Salida esperada</dt>
+        <dd class="col-sm-9"><pre>@Model.SampleOutput</pre></dd>
+    </dl>
+    <a asp-action="ListaDocente" class="btn btn-secondary">Volver</a>
+</div>
+
+@functions {
+    string Color(string d) => d switch
+    {
+        "Fácil" => "success",
+        "Media" => "warning",
+        "Difícil" => "danger",
+        _ => "secondary"
+    };
+}
+

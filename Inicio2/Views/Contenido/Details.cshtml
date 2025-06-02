@@ -1,0 +1,87 @@
+﻿@model Inicio2.Models.Contenido
+
+@{
+    ViewData["Title"] = "Content Details";
+}
+
+<style>
+    .content-card {
+        border-radius: 1.25rem;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.10);
+        margin-top: 40px;
+        margin-bottom: 40px;
+        background: #fff;
+    }
+
+    .content-header {
+        border-radius: 1.25rem 1.25rem 0 0 !important;
+        background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.5rem 1rem;
+    }
+
+        .content-header i {
+            font-size: 2rem;
+        }
+
+    .btn-back {
+        font-weight: 500;
+    }
+
+    .img-content {
+        max-height: 400px;
+        border-radius: 0.75rem;
+    }
+</style>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-8">
+            <div class="card content-card">
+                <div class="content-header">
+                    <i class="fas fa-book-open"></i>
+                    <div>
+                        <h3 class="mb-0">@Model.Titulo</h3>
+                        <small class="text-light">Educational content details</small>
+                    </div>
+                </div>
+                <div class="card-body px-4 py-4">
+                    <div class="mb-3">
+                        <strong>Description:</strong>
+                        <p>@Model.Descripcion</p>
+                    </div>
+
+                    <div class="mb-4 text-center">
+                        <strong>Image:</strong><br />
+                        @if (!string.IsNullOrEmpty(Model.ImagenURL))
+                        {
+                            <img src="@Model.ImagenURL" alt="Content image" class="img-fluid img-content mt-2" />
+                        }
+                        else
+                        {
+                            <p class="mt-2">No image available.</p>
+                        }
+                    </div>
+
+                    <div class="text-center mt-4">
+                        @if (User.IsInRole("Teacher"))
+                        {
+                            <a asp-action="Index" class="btn btn-secondary btn-back">
+                                <i class="fas fa-arrow-left me-1"></i> Back to Teacher List
+                            </a>
+                        }
+                        else
+                        {
+                            <a asp-action="ListaContenidoStudent" class="btn btn-success btn-back">
+                                <i class="fas fa-arrow-left me-1"></i> Back to Student List
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

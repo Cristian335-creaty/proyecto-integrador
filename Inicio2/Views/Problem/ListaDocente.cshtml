@@ -1,0 +1,103 @@
+﻿@model List<Inicio2.Models.Estudiantes.Problem>
+
+@{
+    ViewData["Title"] = "Challenges (Teacher Panel)";
+}
+
+<style>
+    .challenges-card {
+        border-radius: 1.25rem;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.10);
+        margin-top: 40px;
+        margin-bottom: 40px;
+    }
+
+    .challenges-header {
+        border-radius: 1.25rem 1.25rem 0 0 !important;
+        background: linear-gradient(90deg, #2563eb 0%, #1e40af 100%);
+        color: #fff;
+    }
+
+    .table thead th {
+        background: #f1f5f9;
+        color: #1e293b;
+        font-weight: 600;
+        border-top: none;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #f3f4f6;
+    }
+
+    .table img {
+        border-radius: 0.5rem;
+    }
+</style>
+
+<div class="container">
+    <div class="card challenges-card">
+        <div class="card-header challenges-header d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-chalkboard-teacher me-2"></i>
+                <h3 class="mb-0">Challenges (Teacher Panel)</h3>
+            </div>
+            <a asp-action="Register" class="btn btn-light text-primary fw-bold">
+                <i class="fas fa-plus-circle me-1"></i> Add New Challenge
+            </a>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th><i class="fas fa-hashtag"></i> Code</th>
+                            <th><i class="fas fa-heading"></i> Title</th>
+                            <th><i class="fas fa-signal"></i> Difficulty</th>
+                            <th><i class="fas fa-tags"></i> Topics</th>
+                            <th><i class="fas fa-cogs"></i> Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var p in Model)
+                        {
+                            <tr>
+                                <td>@p.Code</td>
+                                <td>@p.Title</td>
+                                <td>
+                                    <span class="badge bg-@Color(p.Difficulty)">
+                                        @p.Difficulty
+                                    </span>
+                                </td>
+                                <td>@p.Topics</td>
+                                <td>
+                                    <a asp-action="Solve" asp-route-id="@p.Id" class="btn btn-sm btn-success me-1">
+                                        <i class="fas fa-code"></i>
+                                    </a>
+                                    <a asp-action="Detalles" asp-route-id="@p.Id" class="btn btn-sm btn-info me-1">
+                                        <i class="fas fa-info-circle"></i>
+                                    </a>
+                                    <a asp-action="Editar" asp-route-id="@p.Id" class="btn btn-sm btn-warning me-1">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a asp-action="Eliminar" asp-route-id="@p.Id" class="btn btn-sm btn-danger">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@functions {
+    string Color(string d) => d switch
+    {
+        "Fácil" => "success",
+        "Media" => "warning",
+        "Difícil" => "danger",
+        _ => "secondary"
+    };
+}

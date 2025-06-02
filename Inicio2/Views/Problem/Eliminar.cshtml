@@ -1,0 +1,28 @@
+﻿@model Inicio2.Models.Estudiantes.Problem
+
+@{
+    ViewData["Title"] = "Delete Challenge";
+}
+
+<h2>¿Estás seguro de que deseas eliminar este reto?</h2>
+
+<div class="alert alert-danger">
+    Esta acción no se puede deshacer.
+</div>
+
+<dl class="row">
+    <dt class="col-sm-3">Código</dt>
+    <dd class="col-sm-9">@Model.Code</dd>
+
+    <dt class="col-sm-3">Título</dt>
+    <dd class="col-sm-9">@Model.Title</dd>
+
+    <dt class="col-sm-3">Dificultad</dt>
+    <dd class="col-sm-9">@Model.Difficulty</dd>
+</dl>
+
+<form asp-action="Eliminar" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a asp-action="ListaDocente" class="btn btn-secondary">Cancelar</a>
+</form>

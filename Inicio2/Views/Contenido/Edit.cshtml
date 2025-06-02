@@ -1,0 +1,131 @@
+﻿@model Inicio2.Models.Contenido
+
+@{
+    ViewData["Title"] = "Edit Content";
+}
+
+<style>
+    .edit-card {
+        border-radius: 1.25rem;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.10);
+        margin-top: 40px;
+        margin-bottom: 40px;
+        background: #fff;
+        padding: 2rem;
+    }
+
+    .edit-header {
+        border-radius: 1.25rem 1.25rem 0 0 !important;
+        background: linear-gradient(90deg, #2563eb 0%, #1e40af 100%);
+        color: #fff;
+        padding: 1.5rem 2rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+        .edit-header i {
+            font-size: 2rem;
+        }
+
+    .form-label {
+        font-weight: 500;
+    }
+
+    .form-control, .form-text, .form-group {
+        font-size: 1.1rem;
+        border-radius: 0.75rem;
+    }
+
+    .btn-primary {
+        background: linear-gradient(90deg, #2563eb 0%, #1e40af 100%);
+        border: none;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+    }
+
+        .btn-primary:hover {
+            background: linear-gradient(90deg, #1e40af 0%, #2563eb 100%);
+        }
+
+    .btn-secondary {
+        font-weight: 500;
+    }
+
+    img.current-image {
+        max-width: 100%;
+        max-height: 200px;
+        border-radius: 0.5rem;
+        margin-top: 0.5rem;
+    }
+</style>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="edit-card">
+                <div class="edit-header">
+                    <i class="fas fa-edit"></i>
+                    <h3 class="mb-0">Edit Content</h3>
+                </div>
+                <form asp-action="Edit" method="post" enctype="multipart/form-data" autocomplete="off">
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="ImagenURL" />
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Titulo" class="form-label">Title</label>
+                        <input asp-for="Titulo" class="form-control" />
+                        <span asp-validation-for="Titulo" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Descripcion" class="form-label">Description</label>
+                        <textarea asp-for="Descripcion" class="form-control" rows="4"></textarea>
+                        <span asp-validation-for="Descripcion" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="FechaCreacion" class="form-label">Date</label>
+                        <input asp-for="FechaCreacion" type="date" class="form-control" />
+                        <span asp-validation-for="FechaCreacion" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label class="form-label">Current Image</label><br />
+                        @if (!string.IsNullOrEmpty(Model.ImagenURL))
+                        {
+                            <img src="@Model.ImagenURL" alt="Current Image" class="current-image" />
+                        }
+                        else
+                        {
+                            <p>No image available</p>
+                        }
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label class="form-label">Change Image</label>
+                        <input type="file" name="nuevaImagen" class="form-control" />
+                        <small class="form-text text-muted">Upload a new image if you want to replace the current one</small>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-1"></i>Save Changes
+                        </button>
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fas fa-times me-1"></i>Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
