@@ -1,0 +1,177 @@
+﻿@model ApplicationUser
+
+@{
+    ViewData["Title"] = "Student Panel";
+}
+
+<style>
+    body {
+        background: linear-gradient(135deg, #e0e7ff 0%, #f8fafc 100%);
+        min-height: 100vh;
+    }
+
+    .student-header {
+        margin-top: 40px;
+        margin-bottom: 40px;
+    }
+
+    .student-title {
+        font-weight: 700;
+        letter-spacing: 1px;
+        color: #1e40af;
+    }
+
+    .student-lead {
+        color: #64748b;
+        font-size: 1.25rem;
+    }
+
+    .card {
+        border-radius: 1.25rem;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.10);
+    }
+
+    .card-header {
+        border-radius: 1.25rem 1.25rem 0 0 !important;
+    }
+
+    .progress {
+        background: #e0e7ff;
+    }
+
+    .progress-bar {
+        background: linear-gradient(90deg, #2563eb 0%, #1e40af 100%);
+        font-weight: 600;
+        font-size: 1rem;
+    }
+
+    .badge {
+        font-size: 1rem;
+        padding: 0.5em 1em;
+    }
+
+    .table thead th {
+        background: #f1f5f9;
+        color: #1e293b;
+        font-weight: 600;
+        border-top: none;
+    }
+
+    .tutorial-icon {
+        color: #2563eb;
+        margin-right: 0.5em;
+    }
+
+    .card-tutorial {
+        border-radius: 1rem;
+        border: 1px solid #e0e7ff;
+        transition: box-shadow 0.2s;
+    }
+
+        .card-tutorial:hover {
+            box-shadow: 0 4px 16px rgba(31, 38, 135, 0.10);
+            border-color: #2563eb;
+        }
+</style>
+
+<div class="container">
+    <div class="text-center student-header">
+        <h1 class="display-4 student-title">
+            <i class="fas fa-laptop-code me-2"></i>CompetitiveCode
+        </h1>
+        <p class="lead student-lead">Competitive programming training platform</p>
+    </div>
+    <div class="row">
+        <!-- User panel -->
+        <div class="col-md-4 mb-4">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-chart-line me-2"></i>Your Progress</h5>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-3">
+                        <div class="progress" style="height: 25px;">
+                            <div class="progress-bar" role="progressbar" style="width: 65%;">65%</div>
+                        </div>
+                        <small class="text-muted">Intermediate Level</small>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><i class="fas fa-check-circle text-success me-2"></i>Solved problems</span>
+                            <span class="badge bg-success rounded-pill">1</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main content -->
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="fas fa-lightbulb me-2"></i>Recommended Problems</h5>
+                    <a href="/problem/list" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-list me-1"></i>View all problems
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead>
+                                <tr>
+                                    <th><i class="fas fa-hashtag"></i> ID</th>
+                                    <th><i class="fas fa-heading"></i> Title</th>
+                                    <th><i class="fas fa-signal"></i> Difficulty</th>
+                                    <th><i class="fas fa-tags"></i> Topics</th>
+                                </tr>
+                            </thead>
+                            <!-- You can add the list of problems here if needed -->
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Learning section -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0"><i class="fas fa-graduation-cap me-2"></i>Recent Tutorials</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <div class="card card-tutorial h-100">
+                                <div class="card-body">
+                                    <h6><i class="fas fa-tree tutorial-icon"></i>Segment Trees</h6>
+                                    <p class="card-text small">Learn to implement and use this powerful structure for range queries.</p>
+                                    <a href="#" class="btn btn-sm btn-outline-primary">View tutorial</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card card-tutorial h-100">
+                                <div class="card-body">
+                                    <h6><i class="fas fa-th-large tutorial-icon"></i>Dynamic Programming</h6>
+                                    <p class="card-text small">Master common DP patterns with practical examples.</p>
+                                    <a href="#" class="btn btn-sm btn-outline-primary">View tutorial</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card card-tutorial h-100">
+                                <div class="card-body">
+                                    <h6><i class="fas fa-water tutorial-icon"></i>Maximum Flow</h6>
+                                    <p class="card-text small">Implement the Ford-Fulkerson algorithm and its variants.</p>
+                                    <a href="#" class="btn btn-sm btn-outline-primary">View tutorial</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

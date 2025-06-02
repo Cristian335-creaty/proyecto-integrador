@@ -1,0 +1,117 @@
+﻿@model Inicio2.Models.Estudiantes.Problem
+
+@{
+    ViewData["Title"] = "Solve Problem";
+}
+
+<style>
+    .solve-card {
+        border-radius: 1.25rem;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.10);
+        margin-top: 40px;
+        margin-bottom: 40px;
+    }
+
+    .solve-header {
+        border-radius: 1.25rem 1.25rem 0 0 !important;
+        background: linear-gradient(90deg, #2563eb 0%, #1e40af 100%);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .solve-header i {
+        font-size: 2rem;
+    }
+
+    .form-label {
+        font-weight: 500;
+    }
+
+    .form-select, .form-control {
+        font-size: 1.1rem;
+        border-radius: 0.75rem;
+    }
+
+    .btn-primary {
+        background: linear-gradient(90deg, #2563eb 0%, #1e40af 100%);
+        border: none;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+    }
+
+    .btn-primary:hover {
+        background: linear-gradient(90deg, #1e40af 0%, #2563eb 100%);
+    }
+
+    .alert pre {
+        background: #f1f5f9;
+        padding: 0.5em;
+        border-radius: 0.5em;
+        margin-bottom: 0;
+    }
+</style>
+
+<div class="container">
+    <div class="card solve-card">
+        <div class="card-header solve-header">
+            <i class="fas fa-terminal"></i>
+            <div>
+                <h3 class="mb-0">@Model.Title</h3>
+                <small class="text-light">@Model.Description</small>
+            </div>
+        </div>
+        <div class="card-body">
+            <!-- Problem solving form -->
+            <form id="formCode" autocomplete="off">
+                <div class="mb-3">
+                    <label for="language" class="form-label"><i class="fas fa-code me-1"></i>Language</label>
+                    <select class="form-select" id="language" name="language">
+                        <option value="62">Java</option>
+                        <option value="71">Python</option>
+                        <option value="50">C</option>
+                        <option value="54">C++</option>
+                        <option value="63">JavaScript</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="code" class="form-label"><i class="fas fa-keyboard me-1"></i>Your code</label>
+                    <textarea id="code" name="code" class="form-control" rows="12" placeholder="Write your code here..."></textarea>
+                </div>
+                <div class="d-grid gap-2">
+                    <button class="btn btn-primary btn-lg" type="submit">
+                        <i class="fas fa-paper-plane me-1"></i>Submit
+                    </button>
+                </div>
+            </form>
+            <div id="result" class="mt-4"></div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Handles code submission and displays evaluation results
+        $("#formCode").submit(function (e) {
+            e.preventDefault();
+            $.post("/Problem/EvaluateCode", {
+                id: @Model.Id,
+                code: $("#code").val(),
+                language: $("#language").val()
+            }, function (data) {
+                let html = "";
+                data.results.forEach((r, i) => {
+                    html += `<div class='alert alert-${r.correct ? "success" : "danger"}'>
+                        <strong>Case ${i + 1}</strong><br>
+                        Input: <pre>${r.input}</pre>
+                        Expected output: <pre>${r.expected}</pre>
+                        Actual output: <pre>${r.output}</pre>
+                        Error: <pre>${r.error}</pre>
+                    </div>`;
+                });
+                $("#result").html(html);
+            });
+        });
+    </script>
+}

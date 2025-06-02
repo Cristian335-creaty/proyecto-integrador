@@ -10,9 +10,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Inicio2.Models;
 using Microsoft.AspNetCore.Authentication;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Inicio2.Areas.Identity.Pages.Account
 {
+    /// <summary>
+    /// Handles user registration logic for the application.
+    /// </summary>
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
@@ -37,38 +42,47 @@ namespace Inicio2.Areas.Identity.Pages.Account
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
+        /// <summary>
+        /// Input model for user registration.
+        /// </summary>
         public class InputModel
         {
-            [Required(ErrorMessage = "El nombre completo es obligatorio")]
-            [Display(Name = "Nombre Completo")]
-            public string NombreCompleto { get; set; }
+            [Required(ErrorMessage = "Full name is required")]
+            [Display(Name = "Full Name")]
+            public string FullName { get; set; }
 
-            [Required(ErrorMessage = "El email es obligatorio")]
-            [EmailAddress(ErrorMessage = "El email no tiene un formato válido")]
+            [Required(ErrorMessage = "Email is required")]
+            [EmailAddress(ErrorMessage = "Invalid email format")]
             [Display(Name = "Email")]
             public string Email { get; set; }
 
-            [Display(Name = "Código de Estudiante (opcional)")]
-            public string CodigoEstudiante { get; set; }
+            [Display(Name = "Student Code (optional)")]
+            public string StudentCode { get; set; }
 
-            [Required(ErrorMessage = "La contraseña es obligatoria")]
-            [StringLength(100, ErrorMessage = "La {0} debe tener al menos {2} y máximo {1} caracteres.", MinimumLength = 6)]
+            [Required(ErrorMessage = "Password is required")]
+            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "Contraseña")]
+            [Display(Name = "Password")]
             public string Password { get; set; }
 
             [DataType(DataType.Password)]
-            [Display(Name = "Confirmar contraseña")]
-            [Compare("Password", ErrorMessage = "Las contraseñas no coinciden.")]
+            [Display(Name = "Confirm Password")]
+            [Compare("Password", ErrorMessage = "Passwords do not match.")]
             public string ConfirmPassword { get; set; }
         }
 
+        /// <summary>
+        /// Handles GET requests for the registration page.
+        /// </summary>
         public async Task OnGetAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
+        /// <summary>
+        /// Handles POST requests for user registration.
+        /// </summary>
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
@@ -79,33 +93,33 @@ namespace Inicio2.Areas.Identity.Pages.Account
                 {
                     UserName = Input.Email,
                     Email = Input.Email,
-                    NombreCompleto = Input.NombreCompleto,
-                    CodigoEstudiante = Input.CodigoEstudiante
+                    FullName = Input.FullName,
+                    StudentCode = Input.StudentCode
                 };
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
-                    // 1. Verificar/Crear rol Estudiante
-                    if (!await _roleManager.RoleExistsAsync("Estudiante"))
+                    // 1. Ensure the "Student" role exists
+                    if (!await _roleManager.RoleExistsAsync("Student"))
                     {
-                        await _roleManager.CreateAsync(new IdentityRole("Estudiante"));
+                        await _roleManager.CreateAsync(new IdentityRole("Student"));
                     }
 
-                    // 2. Asignar rol
-                    await _userManager.AddToRoleAsync(user, "Estudiante");
+                    // 2. Assign "Student" role to the new user
+                    await _userManager.AddToRoleAsync(user, "Student");
 
-                    // 3. Iniciar sesión
+                    // 3. Sign in the new user
                     await _signInManager.SignInAsync(user, isPersistent: false);
 
-                    // 4. REDIRECCIÓN ESPECÍFICA PARA ESTUDIANTES - Aquí va el punto 5
-                    if (await _userManager.IsInRoleAsync(user, "Estudiante"))
+                    // 4. Redirect specifically for students
+                    if (await _userManager.IsInRoleAsync(user, "Student"))
                     {
-                        return LocalRedirect("/Estudiantes/Index");
+                        return LocalRedirect("/Identity/Account/Login");
                     }
 
-                    // Redirección normal para otros roles (si los hubiera)
-                    return LocalRedirect(returnUrl);
+                    // Default redirect for other roles (if any)
+                    return RedirectToPage("./Login");
                 }
 
                 foreach (var error in result.Errors)
@@ -114,7 +128,7 @@ namespace Inicio2.Areas.Identity.Pages.Account
                 }
             }
 
-            // Si llegamos aquí, algo falló, volver a mostrar el formulario
+            // If we got this far, something failed; redisplay the form
             return Page();
         }
     }

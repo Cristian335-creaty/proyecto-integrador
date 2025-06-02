@@ -1,39 +1,89 @@
 ﻿@page
 @model RegisterModel
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "Student Registration";
 }
 
-<h1>@ViewData["Title"]</h1>
+<style>
+    body {
+        background: linear-gradient(135deg, #e0e7ff 0%, #f8fafc 100%);
+        min-height: 100vh;
+    }
 
-<div class="row">
-    <div class="col-md-4">
-        <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h4>Create a new account.</h4>
-            <hr />
-            <div class="form-group">
-                <label asp-for="Input.NombreCompleto"></label>
-                <input asp-for="Input.NombreCompleto" class="form-control" />
-                <span asp-validation-for="Input.NombreCompleto" class="text-danger"></span>
+    .register-card {
+        border-radius: 1.5rem;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+        background: rgba(255,255,255,0.97);
+        margin-top: 60px;
+    }
+
+    .register-icon {
+        font-size: 3rem;
+        color: #2563eb;
+        margin-bottom: 10px;
+    }
+
+    .btn-primary {
+        background: linear-gradient(90deg, #2563eb 0%, #1e40af 100%);
+        border: none;
+    }
+
+        .btn-primary:hover {
+            background: linear-gradient(90deg, #1e40af 0%, #2563eb 100%);
+        }
+
+    .form-label {
+        font-weight: 500;
+    }
+
+    .card-header {
+        border-radius: 1.5rem 1.5rem 0 0 !important;
+    }
+</style>
+
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <section class="card register-card shadow-lg">
+            <div class="card-header bg-primary text-white text-center">
+                <span class="register-icon">
+                    <i class="fas fa-user-plus"></i>
+                </span>
+                <h2 class="mb-0">@ViewData["Title"]</h2>
             </div>
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Input.Email"></label>
-                <input asp-for="Input.Email" class="form-control" />
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            <div class="card-body px-4 py-4">
+                <!-- Registration form for new students -->
+                <form asp-route-returnUrl="@Model.ReturnUrl" method="post" autocomplete="off">
+                    <div asp-validation-summary="All" class="alert alert-danger" role="alert"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="Input.FullName" class="form-label"></label>
+                        <input asp-for="Input.FullName" class="form-control form-control-lg" placeholder="Full name" />
+                        <span asp-validation-for="Input.FullName" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Input.Email" class="form-label"></label>
+                        <input asp-for="Input.Email" class="form-control form-control-lg" placeholder="example@email.com" />
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Input.Password" class="form-label"></label>
+                        <input asp-for="Input.Password" class="form-control form-control-lg" placeholder="Password" />
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Input.ConfirmPassword" class="form-label"></label>
+                        <input asp-for="Input.ConfirmPassword" class="form-control form-control-lg" placeholder="Confirm password" />
+                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                    </div>
+                    <div class="d-grid gap-2 mb-3">
+                        <button type="submit" class="btn btn-primary btn-lg shadow-sm">Register</button>
+                    </div>
+                    <div class="text-center">
+                        <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl" class="text-decoration-none">Already have an account? Sign in</a>
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <label asp-for="Input.Password"></label>
-                <input asp-for="Input.Password" class="form-control" />
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.ConfirmPassword"></label>
-                <input asp-for="Input.ConfirmPassword" class="form-control" />
-                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-            </div>
-            <button type="submit" class="btn btn-primary">Register</button>
-        </form>
+        </section>
     </div>
 </div>
 

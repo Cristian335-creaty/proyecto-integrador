@@ -1,0 +1,103 @@
+﻿@model IEnumerable<Inicio2.Models.Contenido>
+
+@{
+    ViewData["Title"] = "Contenido Educativo";
+}
+
+<style>
+    .contenido-card {
+        border-radius: 1.25rem;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.10);
+        margin-top: 40px;
+        margin-bottom: 40px;
+    }
+
+    .contenido-header {
+        border-radius: 1.25rem 1.25rem 0 0 !important;
+        background: linear-gradient(90deg, #2563eb 0%, #1e40af 100%);
+        color: #fff;
+    }
+
+    .table thead th {
+        background: #f1f5f9;
+        color: #1e293b;
+        font-weight: 600;
+        border-top: none;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #f3f4f6;
+    }
+
+    .contenido-link {
+        text-decoration: none;
+        color: #2563eb;
+        font-weight: 500;
+        transition: color 0.2s;
+    }
+
+        .contenido-link:hover {
+            color: #1e40af;
+            text-decoration: underline;
+        }
+
+    .table img {
+        border-radius: 0.5rem;
+    }
+</style>
+
+<div class="container">
+    <div class="card contenido-card">
+        <div class="card-header contenido-header d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-book me-2"></i>
+                <h3 class="mb-0">Contenido Educativo</h3>
+            </div>
+            <a asp-action="Create" class="btn btn-light text-primary fw-bold">
+                <i class="fas fa-plus-circle me-1"></i> Agregar nuevo contenido
+            </a>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th><i class="fas fa-heading"></i> Título</th>
+                            <th><i class="fas fa-align-left"></i> Descripción</th>
+                            <th><i class="fas fa-calendar-alt"></i> Fecha</th>
+                            <th><i class="fas fa-image"></i> Imagen</th>
+                            <th><i class="fas fa-cogs"></i> Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Titulo</td>
+                                <td>@item.Descripcion</td>
+                                <td>@item.FechaCreacion.ToShortDateString()</td>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(item.ImagenURL))
+                                    {
+                                        <img src="@item.ImagenURL" alt="Imagen" width="100" />
+                                    }
+                                </td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning me-1">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info me-1">
+                                        <i class="fas fa-info-circle"></i>
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

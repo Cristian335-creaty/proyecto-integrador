@@ -3,18 +3,27 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Inicio2.Models
 {
+    
+    /// Represents an application user with additional properties for students and teachers.
+    
     public class ApplicationUser : IdentityUser
     {
+        
+        /// Full name of the user (required for all users).
+        
         [Required]
         [PersonalData]
-        public string NombreCompleto { get; set; }
+        public string FullName { get; set; }
 
-        // Solo para estudiantes
-        [PersonalData]
-        public string? CodigoEstudiante { get; set; }
+        /// Student code (only for students).
 
-        // Solo para profesores
         [PersonalData]
-        public string? Departamento { get; set; }
+        public string? StudentCode { get; set; }
+
+        
+        /// Department (only for teachers).
+        
+        [PersonalData]
+        public string? Department { get; set; }
     }
 }

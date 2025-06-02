@@ -1,0 +1,99 @@
+@model Inicio2.Models.ViewModels.EditStudentViewModel
+
+@{
+    ViewData["Title"] = "Edit Student";
+}
+
+<style>
+    .edit-card {
+        border-radius: 1.25rem;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.10);
+        margin-top: 40px;
+        margin-bottom: 40px;
+        background: #fff;
+    }
+
+    .edit-header {
+        border-radius: 1.25rem 1.25rem 0 0 !important;
+        background: linear-gradient(90deg, #2563eb 0%, #1e40af 100%);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.5rem 1rem;
+    }
+
+        .edit-header i {
+            font-size: 2rem;
+        }
+
+    .form-label {
+        font-weight: 500;
+    }
+
+    .form-control {
+        font-size: 1.1rem;
+        border-radius: 0.75rem;
+    }
+
+    .btn-primary {
+        background: linear-gradient(90deg, #2563eb 0%, #1e40af 100%);
+        border: none;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+    }
+
+        .btn-primary:hover {
+            background: linear-gradient(90deg, #1e40af 0%, #2563eb 100%);
+        }
+</style>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-7 col-lg-6">
+            <div class="card edit-card">
+                <div class="edit-header">
+                    <i class="fas fa-user-edit"></i>
+                    <div>
+                        <h3 class="mb-0">@ViewData["Title"]</h3>
+                        <small class="text-light">Edit student information</small>
+                    </div>
+                </div>
+                <div class="card-body px-4 py-4">
+                    <!-- Edit student form -->
+                    <form asp-action="EditStudent" method="post" autocomplete="off">
+                        <input type="hidden" asp-for="Email" />
+                        <div asp-validation-summary="All" class="alert alert-danger" role="alert"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label"></label>
+                            <input asp-for="Email" class="form-control" readonly />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="FullName" class="form-label"></label>
+                            <input asp-for="FullName" class="form-control" />
+                            <span asp-validation-for="FullName" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="StudentCode" class="form-label"></label>
+                            <input asp-for="StudentCode" class="form-control" />
+                            <span asp-validation-for="StudentCode" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-save me-1"></i>Save Changes
+                            </button>
+                        </div>
+                        <div class="text-center mt-3">
+                            <a asp-action="UserList" class="text-decoration-none">Back to user list</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

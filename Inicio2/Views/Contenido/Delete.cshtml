@@ -1,0 +1,23 @@
+﻿@model Inicio2.Models.Contenido
+
+@{
+    ViewData["Title"] = "Eliminar Contenido";
+}
+
+<h2>¿Estás seguro de que deseas eliminar este contenido?</h2>
+
+<div>
+    <h4>@Model.Titulo</h4>
+    <p>@Model.Descripcion</p>
+    @if (!string.IsNullOrEmpty(Model.ImagenURL))
+    {
+        <img src="@Model.ImagenURL" alt="Imagen" style="max-height: 200px;" />
+    }
+</div>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>
+

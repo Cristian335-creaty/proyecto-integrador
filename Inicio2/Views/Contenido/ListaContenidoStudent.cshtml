@@ -1,0 +1,92 @@
+﻿@model List<Inicio2.Models.Contenido>
+
+@{
+    ViewData["Title"] = "Student Content List";
+}
+
+<style>
+    .content-card {
+        border-radius: 1.25rem;
+        box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+        margin-top: 40px;
+        margin-bottom: 40px;
+    }
+
+    .content-header {
+        border-radius: 1.25rem 1.25rem 0 0 !important;
+        background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+        color: #fff;
+    }
+
+    .table thead th {
+        background: #f1f5f9;
+        color: #1e293b;
+        font-weight: 600;
+        border-top: none;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #f3f4f6;
+    }
+
+    .btn-view {
+        background-color: #2563eb;
+        color: #fff;
+    }
+
+        .btn-view:hover {
+            background-color: #1e40af;
+            color: #fff;
+        }
+
+    .image-thumb {
+        width: 100px;
+        border-radius: 0.5rem;
+    }
+</style>
+
+<div class="container">
+    <div class="card content-card">
+        <div class="card-header content-header d-flex align-items-center">
+            <i class="fas fa-book-reader me-2"></i>
+            <h3 class="mb-0">Educational Content</h3>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Date</th>
+                            <th>Image</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Titulo</td>
+                                <td>@item.Descripcion</td>
+                                <td>@item.FechaCreacion.ToShortDateString()</td>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(item.ImagenURL))
+                                    {
+                                        <img src="@item.ImagenURL" alt="Image" class="image-thumb" />
+                                    }
+                                </td>
+                                <td>
+                                    <a asp-action="Details" asp-route-id="@item.Id" asp-route-origin="student" class="btn btn-sm btn-view">
+                                        View
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
